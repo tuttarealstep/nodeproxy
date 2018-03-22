@@ -3,7 +3,7 @@
   "authenticationUsernamePasswordRequired": false,
   "authentication" : {
     "username": "test",
-    "password": "prova"
+    "password": "123456"
   },
-  "debug": true
+  "debug": false
 }
