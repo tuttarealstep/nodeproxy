@@ -87,7 +87,7 @@ module.exports = {
                     case standards.command.bind:
                         //todo
                         break;
-                    case standards.command.udpAssociative:
+                    case standards.command.udpAssociate:
                         //todo
                         break;
                 }

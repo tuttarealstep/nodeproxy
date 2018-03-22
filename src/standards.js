@@ -8,7 +8,7 @@ const accesMethod = {
 const command = {
     connect: 0x01,
     bind: 0x02,
-    udpAssociative: 0x03
+    udpAssociate: 0x03
 }
 
 const addressType = {
