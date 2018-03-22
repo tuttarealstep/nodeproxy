@@ -86,7 +86,6 @@ module.exports = {
                         break;
                     case standards.command.bind:
                         //todo
-                        console.log("sdadas")
                         break;
                     case standards.command.udpAssociative:
                         //todo

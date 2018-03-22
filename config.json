@@ -1,6 +1,6 @@
 {
   "port": 3000,
-  "authenticationUsernamePasswordRequired": true,
+  "authenticationUsernamePasswordRequired": false,
   "authentication" : {
     "username": "test",
     "password": "prova"
