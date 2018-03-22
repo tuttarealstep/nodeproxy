@@ -24,19 +24,29 @@ module.exports = {
                  | 1  |   1    |
                  +----+--------+
                  */
-                let authType = data[2]
 
-                switch (authType)
+                let authTypeFound = false;
+
+                for(let authType of data.slice(2, data.length))
                 {
-                    case standards.accesMethod.usernamePassword:
-                        socket.authRequired = true
-                        socket.write(new Buffer([0x05, standards.accesMethod.usernamePassword]))
-                        break;
-                    case standards.accesMethod.noAuthRequired:
-                    default:
-                        socket.write(new Buffer([0x05, standards.accesMethod.noAuthRequired]))
-                        break;
+                    switch (authType)
+                    {
+                        case standards.accesMethod.usernamePassword:
+                            socket.authRequired = true
+                            socket.write(new Buffer([0x05, standards.accesMethod.usernamePassword]))
+                            authTypeFound = true
+                            break;
+                        case standards.accesMethod.noAuthRequired:
+                            if(!config.authenticationUsernamePasswordRequired)
+                                socket.write(new Buffer([0x05, standards.accesMethod.noAuthRequired]))
+
+                            authTypeFound = true
+                            break;
+                    }
                 }
+
+                if(!authTypeFound)
+                    socket.write(new Buffer([0x05, standards.accesMethod.noAcceptableMethods]))
             } else {
                 /*
                  Request
@@ -76,6 +86,7 @@ module.exports = {
                         break;
                     case standards.command.bind:
                         //todo
+                        console.log("sdadas")
                         break;
                     case standards.command.udpAssociative:
                         //todo
