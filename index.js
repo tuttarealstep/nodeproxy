@@ -11,6 +11,7 @@ var server = net.createServer(function (socket)
     //Additional info for socket
     socket.id = socket.remoteAddress + ":" + socket.remotePort //socketId remoteAddress:remotePort
     socket.greeting = false //check for client greeting
+    socket.authRequired = false
     socket.client = null //value for store connection from the socket
 
     logger.debug("[CLIENT][" + socket.id + "]  Connected!")

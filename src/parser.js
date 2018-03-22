@@ -2,6 +2,7 @@ let logger = require("./logger")
 let {SocketClient} = require('./socketClient')
 let standards = require('./standards')
 let dns = require('dns');
+let config = require('../config.json')
 
 function setUpSocketClient(socket, addressType, dstAddress, dstPort) {
     return new SocketClient(socket, addressType, dstAddress, dstPort).setUpSocketConnection()
@@ -23,7 +24,19 @@ module.exports = {
                  | 1  |   1    |
                  +----+--------+
                  */
-                socket.write(new Buffer([0x05, standards.accesMethod.noAuthRequired]))
+                let authType = data[2]
+
+                switch (authType)
+                {
+                    case standards.accesMethod.usernamePassword:
+                        socket.authRequired = true
+                        socket.write(new Buffer([0x05, standards.accesMethod.usernamePassword]))
+                        break;
+                    case standards.accesMethod.noAuthRequired:
+                    default:
+                        socket.write(new Buffer([0x05, standards.accesMethod.noAuthRequired]))
+                        break;
+                }
             } else {
                 /*
                  Request
@@ -69,10 +82,28 @@ module.exports = {
                         break;
                 }
             }
-        } else if (data == 0x04) {
+        } else if (data[0] == 0x01 && socket.greeting && socket.authRequired)
+        {
+            //authentication
+            let username = data.toString("utf8", 2, 2 + data[1])
+            let password = data.toString("utf8", 3 + data[1], 2 + data[3 + data[1]])
+
+            if(config.authenticationUsernamePasswordRequired)
+            {
+                if(config.authentication.username == username && config.authentication.password == password)
+                {
+                    socket.write(new Buffer([0x01, 0x00])) //success
+                } else {
+                    socket.write(new Buffer([0x01, 0x01])) //failure
+                }
+            } else {
+                socket.write(new Buffer([0x01, 0x00]))
+            }
+        } else if (data[0] == 0x04) {
             //todo throw error not supported now
             logger.log("error")
         } else {
+
             //packets
             try {
                 if (socket.client.writable)
