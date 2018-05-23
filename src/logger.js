@@ -2,16 +2,19 @@ var config = require('../config.json')
 
 module.exports = {
     log: function (message) {
-        console.log(`[*] ${message}`)
+        if(!config.disableOutput)
+            console.log(`[*] ${message}`)
     },
     error: function (message) {
-        console.log(`[*][ERROR] ${message}`)
+        if(!config.disableOutput)
+            console.log(`[*][ERROR] ${message}`)
     },
     debug: function (message) {
         if(config.debug)
             console.log(message)
     },
     logObj: function (obj) {
-        console.log(`[*] `, obj)
+        if(!config.disableOutput)
+            console.log(`[*] `, obj)
     }
 }

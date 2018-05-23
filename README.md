@@ -21,8 +21,9 @@ This is the current default config:
     "username": "test",
     "password": "123456"
   },
+  "disableOutput": false,
   "debug": false
 }
 ```
-
+The `disableOutput` is field to disable the output of the logger (if set to true)
 The `authenticationUsernamePasswordRequired` is a field to enable the username & password authentication.
